@@ -25,34 +25,52 @@ class Tree
         if value < index.value
             if index.left == nil
                 index.left = Node.new(value, index)
-                puts "Node with value #{value} added as left child of #{index.value}."
             else
                 add_node(value, index.left)
             end
         elsif value > index.value
             if index.right == nil
                 index.right = Node.new(value, index)
-                puts "Node with value #{value} added as right child of #{index.value}."
             else
                 add_node(value, index.right)
             end
-        else
-            # element exists in binary tree
-            puts "Element #{value} exists in binary tree as #{index.value}."
         end
     end
     
-    def breadth_first_search(value); end
+    def breadth_first_search(value)
+        queue = [@root]
+        
+        until queue.empty? do
+            if queue[0].value == value
+                return queue[0]
+            end
+            queue << queue[0].left if queue[0].left != nil
+            queue << queue[0].right if queue[0].right != nil
+            queue.shift
+        end
+        return nil
+    end
     
-    def depth_first_search(value); end
+    def depth_first_search(value)
+        stack = [@root]
+        
+        until stack.empty? do
+            current = stack[0]
+            if current.value == value
+                return current
+            end
+            stack.shift
+            stack.unshift(current.right) if current.right != nil
+            stack.unshift(current.left) if current.left != nil
+        end
+        return nil
+    end
     
-    def dfs_rec(value); end
+    def dfs_rec(value, node = @root)
+        if node.value == value
+            return node
+        end
+        dfs_rec(value, node.left) if node.left != nil
+        dfs_rec(value, node.right) if node.right != nil
+    end
 end
-
-
-array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-tree = Tree.new(array[0])
-tree.build(array)
-tree.breadth_first_search(23)
-tree.depth_first_search(23)
-tree.dfs_rec(23)
