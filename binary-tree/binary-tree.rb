@@ -1,9 +1,8 @@
 class Node
     attr_accessor :value, :parent, :left, :right
     
-    def initialize(value=nil, parent=nil, left=nil, right=nil)
+    def initialize(value=nil, left=nil, right=nil)
         @value = value
-        @parent = parent
         @left = left
         @right = right
     end
@@ -41,9 +40,7 @@ class Tree
         queue = [@root]
         
         until queue.empty? do
-            if queue[0].value == value
-                return queue[0]
-            end
+            return queue[0] if queue[0].value == value
             queue << queue[0].left if queue[0].left != nil
             queue << queue[0].right if queue[0].right != nil
             queue.shift
@@ -56,9 +53,7 @@ class Tree
         
         until stack.empty? do
             current = stack[0]
-            if current.value == value
-                return current
-            end
+            return current if current.value == value
             stack.shift
             stack.unshift(current.right) if current.right != nil
             stack.unshift(current.left) if current.left != nil
@@ -67,9 +62,7 @@ class Tree
     end
     
     def dfs_rec(value, node = @root)
-        if node.value == value
-            return node
-        end
+        return node if node.value == value
         dfs_rec(value, node.left) if node.left != nil
         dfs_rec(value, node.right) if node.right != nil
     end
